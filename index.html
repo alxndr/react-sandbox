@@ -12,13 +12,24 @@
     <script>
      var tags = ['a', 'div', 'h1', 'h2', 'li', 'ul'];
      var e = tags.reduce(function(e, tagName) {
-         e[tagName] = function(/* variable length */) {
-             var children = [].slice.apply(arguments);
-             var attrs = children.shift();
-             return React.createElement.apply(React, [tagName, attrs].concat(children));
-         };
-         return e;
+       e[tagName] = function(/* variable length */) {
+         var children = [].slice.apply(arguments);
+         var attrs = children.shift();
+         return React.createElement.apply(React, [tagName, attrs].concat(children));
+       };
+       return e;
      }, {});
+
+     var ContactItem = React.createClass({
+         propTypes: {
+             name: React.PropTypes.string.isRequired
+         },
+         render: function() {
+             return e.li({className: 'Contact'},
+                         e.h2({className: 'Contact-name'}, this.props.name)
+             );
+         }
+     });
 
      var contacts = [
          {key: 1, name: 'Me', email: 'foo@bar'},
@@ -27,17 +38,13 @@
      var contactListItems = contacts
        .filter(function(contact) { return !!contact.email })
        .map(function(contact) {
-         return e.li({},
-            e.h2({}, contact.name),
-            e.a({href: contact.email}, contact.email)
-         )
+         return React.createElement(ContactItem, {name: contact.name})
        });
 
-     var rootElement =
-        e.div({},
-           e.h1({}, 'Contacts'),
-           e.ul({}, contactListItems)
-        );
+     var rootElement = e.div({},
+       e.h1({}, 'Contacts'),
+       e.ul({}, contactListItems)
+     );
      ReactDOM.render(rootElement, document.getElementById('react-app'));
     </script>
   </body>
