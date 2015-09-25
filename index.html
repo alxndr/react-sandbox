@@ -19,19 +19,24 @@
          };
          return e;
      }, {});
+
+     var contacts = [
+         {key: 1, name: 'Me', email: 'foo@bar'},
+         {key: 2, name: 'You'}
+     ];
+     var contactListItems = contacts
+       .filter(function(contact) { return !!contact.email })
+       .map(function(contact) {
+         return e.li({},
+            e.h2({}, contact.name),
+            e.a({href: contact.email}, contact.email)
+         )
+       });
+
      var rootElement =
         e.div({},
            e.h1({}, 'Contacts'),
-           e.ul({},
-                e.li({},
-                     e.h2({}, 'James Nelson'),
-                     e.a({href: 'mailto:foo@bar'}, 'foo@bar')
-                ),
-                e.li({},
-                     e.h2({}, 'Joe Citizen'),
-                     e.a({href: 'mailto:bar@baz'}, 'bar@baz')
-                )
-           )
+           e.ul({}, contactListItems)
         );
      ReactDOM.render(rootElement, document.getElementById('react-app'));
     </script>
