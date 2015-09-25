@@ -9,5 +9,31 @@
 
     <script src="https://cdn.jsdelivr.net/react/0.14.0-rc1/react.js"></script>
     <script src="https://cdn.jsdelivr.net/react/0.14.0-rc1/react-dom.js"></script>
+    <script>
+     var tags = ['a', 'div', 'h1', 'h2', 'li', 'ul'];
+     var e = tags.reduce(function(e, tagName) {
+         e[tagName] = function(/* variable length */) {
+             var children = [].slice.apply(arguments);
+             var attrs = children.shift();
+             return React.createElement.apply(React, [tagName, attrs].concat(children));
+         };
+         return e;
+     }, {});
+     var rootElement =
+        e.div({},
+           e.h1({}, 'Contacts'),
+           e.ul({},
+                e.li({},
+                     e.h2({}, 'James Nelson'),
+                     e.a({href: 'mailto:foo@bar'}, 'foo@bar')
+                ),
+                e.li({},
+                     e.h2({}, 'Joe Citizen'),
+                     e.a({href: 'mailto:bar@baz'}, 'bar@baz')
+                )
+           )
+        );
+     ReactDOM.render(rootElement, document.getElementById('react-app'));
+    </script>
   </body>
 </html>
