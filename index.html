@@ -22,23 +22,27 @@
 
      var ContactItem = React.createClass({
          propTypes: {
+             description: React.PropTypes.string,
+             email: React.PropTypes.string,
              name: React.PropTypes.string.isRequired
          },
          render: function() {
-             return e.li({className: 'Contact'},
-                         e.h2({className: 'Contact-name'}, this.props.name)
-             );
+             console.log(this.props);
+             var name = e.h2({className: 'Contact-name'}, this.props.name);
+             var email = this.props.email ? e.a({href: this.props.email}, this.props.email) : '';
+             var description = this.props.description ? e.div({}, this.props.description) : '';
+             return e.li({className: 'Contact'}, name, email, description);
          }
      });
 
      var contacts = [
          {key: 1, name: 'Me', email: 'foo@bar'},
-         {key: 2, name: 'You'}
+         {key: 2, name: 'You'},
+         {key: 3, name: 'Someone', description: 'Hey wow here is a description.'}
      ];
      var contactListItems = contacts
-       .filter(function(contact) { return !!contact.email })
        .map(function(contact) {
-         return React.createElement(ContactItem, {name: contact.name})
+         return React.createElement(ContactItem, contact)
        });
 
      var rootElement = e.div({},
