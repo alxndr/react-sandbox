@@ -10,14 +10,14 @@
     <script src="https://cdn.jsdelivr.net/react/0.14.0-rc1/react.js"></script>
     <script src="https://cdn.jsdelivr.net/react/0.14.0-rc1/react-dom.js"></script>
     <script>
-     var tags = ['a', 'div', 'h1', 'h2', 'li', 'ul'];
-     var e = tags.reduce(function(e, tagName) {
-       e[tagName] = function(/* variable length */) {
+     var tag = ['a', 'div', 'h1', 'h2', 'li', 'ul']
+       .reduce(function(tagObj, tagName) {
+       tagObj[tagName] = function(/* variable length */) {
          var children = [].slice.apply(arguments);
          var attrs = children.shift();
          return React.createElement.apply(React, [tagName, attrs].concat(children));
        };
-       return e;
+       return tagObj;
      }, {});
 
      var ContactItem = React.createClass({
@@ -27,11 +27,10 @@
              name: React.PropTypes.string.isRequired
          },
          render: function() {
-             console.log(this.props);
-             var name = e.h2({className: 'Contact-name'}, this.props.name);
-             var email = this.props.email ? e.a({href: this.props.email}, this.props.email) : '';
-             var description = this.props.description ? e.div({}, this.props.description) : '';
-             return e.li({className: 'Contact'}, name, email, description);
+             var name = tag.h2({className: 'Contact-name'}, this.props.name);
+             var email = this.props.email ? tag.a({href: this.props.email}, this.props.email) : '';
+             var description = this.props.description ? tag.div({}, this.props.description) : '';
+             return tag.li({className: 'Contact'}, name, email, description);
          }
      });
 
@@ -45,9 +44,9 @@
          return React.createElement(ContactItem, contact)
        });
 
-     var rootElement = e.div({},
-       e.h1({}, 'Contacts'),
-       e.ul({}, contactListItems)
+     var rootElement = tag.div({},
+       tag.h1({}, 'Contacts'),
+       tag.ul({}, contactListItems)
      );
      ReactDOM.render(rootElement, document.getElementById('react-app'));
     </script>
