@@ -33,7 +33,21 @@
                  return li({className: "ContactItem"}, name, email, description);
              }
          });
+         var ContactForm = React.createClass({
+             propTypes: {
+                 contact: React.PropTypes.object.isRequired
+             },
+             render: function() {
+                 return form({className: "ContactForm"},
+                             input({type: "text", htmlFor: "name", placeholder: "Your Name"}),
+                             input({type: "text", htmlFor: "email", placeholder: "your@email.address"}),
+                             textarea({htmlFor: "description"}, "Say something about yourself!"),
+                             button({type: "submit"}, "add")
+                 );
+             }
+         });
 
+         var blankContact = {name: "", email: "", description: ""}
          var contacts = [
              {key: 1, name: "Me", email: "foo@bar"},
              {key: 2, name: "You"},
@@ -46,7 +60,8 @@
 
          var rootElement = div({},
                             h1({}, "Contacts"),
-                            ul({}, contactListItems)
+                            ul({}, contactListItems),
+                            React.createElement(ContactForm, {contact: blankContact})
          );
          ReactDOM.render(rootElement, document.getElementById("react-app"));
         </script>
