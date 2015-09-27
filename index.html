@@ -9,15 +9,23 @@
                  return React.createElement.apply(React, [tagName, attrs].concat(children));
              };
          });
+         window.textInput = function(/* variable length */) {
+             var children = [].slice.apply(arguments);
+             var attrs = children.shift();
+             if (!attrs.type) {
+                 attrs.type = "text";
+             }
+             return React.createElement.apply(React, ["input", attrs].concat(children));
+         }
         </script>
         <meta charset="UTF-8" />
         <title>I'm in a React app!</title>
+        <script src="https://cdn.jsdelivr.net/react/0.14.0-rc1/react.js"></script>
+        <script src="https://cdn.jsdelivr.net/react/0.14.0-rc1/react-dom.js"></script>
+        <link href="main.css" rel="stylesheet">
     </head>
     <body>
         <div id="react-app"></div>
-
-        <script src="https://cdn.jsdelivr.net/react/0.14.0-rc1/react.js"></script>
-        <script src="https://cdn.jsdelivr.net/react/0.14.0-rc1/react-dom.js"></script>
 
         <script>
          var ContactItem = React.createClass({
@@ -27,10 +35,11 @@
                  name: React.PropTypes.string.isRequired
              },
              render: function() {
-                 var name = h2({className: "Contact-name"}, this.props.name);
-                 var email = this.props.email ? a({href: this.props.email}, this.props.email) : "";
-                 var description = this.props.description ? div({}, this.props.description) : "";
-                 return li({className: "ContactItem"}, name, email, description);
+                 return li({className: "ContactItem"},
+                           h2({className: "ContactItem-name"}, this.props.name),
+                           a({className: "ContactItem-email", href: this.props.email}, this.props.email),
+                           div({className: "ContactItem-description"}, this.props.description)
+                 );
              }
          });
          var ContactForm = React.createClass({
@@ -39,15 +48,15 @@
              },
              render: function() {
                  return form({className: "ContactForm"},
-                             input({type: "text", htmlFor: "name", placeholder: "Your Name"}),
-                             input({type: "text", htmlFor: "email", placeholder: "your@email.address"}),
-                             textarea({htmlFor: "description"}, "Say something about yourself!"),
-                             button({type: "submit"}, "add")
+                             textInput({htmlFor: "name", placeholder: "Your Name", className: "ContactForm-name"}),
+                             textInput({htmlFor: "email", placeholder: "your@email.address", className: "ContactForm-email"}),
+                             textarea({htmlFor: "description", placeholder: "Say something about yourself!", className: "ContactForm-description"}),
+                             button({type: "submit", className: "ContactForm-submit"}, "add")
                  );
              }
          });
 
-         var blankContact = {name: "", email: "", description: ""}
+         var blankContact = {name: "", email: "", description: ""};
          var contacts = [
              {key: 1, name: "Me", email: "foo@bar"},
              {key: 2, name: "You"},
@@ -59,9 +68,9 @@
             });
 
          var rootElement = div({},
-                            h1({}, "Contacts"),
-                            ul({}, contactListItems),
-                            React.createElement(ContactForm, {contact: blankContact})
+                               h1({}, "Contacts"),
+                               ul({}, contactListItems),
+                               React.createElement(ContactForm, {contact: blankContact})
          );
          ReactDOM.render(rootElement, document.getElementById("react-app"));
         </script>
