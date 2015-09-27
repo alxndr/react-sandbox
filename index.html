@@ -1,54 +1,54 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8" />
-    <title>I'm in a React app!</title>
-  </head>
-  <body>
-    <div id="react-app"></div>
+    <head>
+        <script>
+         ["a", "button", "div", "form", "h1", "h2", "input", "li", "textarea", "ul"].map(function(tagName) {
+             window[tagName] = function(/* variable length */) {
+                 var children = [].slice.apply(arguments);
+                 var attrs = children.shift();
+                 return React.createElement.apply(React, [tagName, attrs].concat(children));
+             };
+         });
+        </script>
+        <meta charset="UTF-8" />
+        <title>I'm in a React app!</title>
+    </head>
+    <body>
+        <div id="react-app"></div>
 
-    <script src="https://cdn.jsdelivr.net/react/0.14.0-rc1/react.js"></script>
-    <script src="https://cdn.jsdelivr.net/react/0.14.0-rc1/react-dom.js"></script>
-    <script>
-     var tag = ['a', 'div', 'h1', 'h2', 'li', 'ul']
-       .reduce(function(tagObj, tagName) {
-       tagObj[tagName] = function(/* variable length */) {
-         var children = [].slice.apply(arguments);
-         var attrs = children.shift();
-         return React.createElement.apply(React, [tagName, attrs].concat(children));
-       };
-       return tagObj;
-     }, {});
+        <script src="https://cdn.jsdelivr.net/react/0.14.0-rc1/react.js"></script>
+        <script src="https://cdn.jsdelivr.net/react/0.14.0-rc1/react-dom.js"></script>
 
-     var ContactItem = React.createClass({
-         propTypes: {
-             description: React.PropTypes.string,
-             email: React.PropTypes.string,
-             name: React.PropTypes.string.isRequired
-         },
-         render: function() {
-             var name = tag.h2({className: 'Contact-name'}, this.props.name);
-             var email = this.props.email ? tag.a({href: this.props.email}, this.props.email) : '';
-             var description = this.props.description ? tag.div({}, this.props.description) : '';
-             return tag.li({className: 'Contact'}, name, email, description);
-         }
-     });
+        <script>
+         var ContactItem = React.createClass({
+             propTypes: {
+                 description: React.PropTypes.string,
+                 email: React.PropTypes.string,
+                 name: React.PropTypes.string.isRequired
+             },
+             render: function() {
+                 var name = h2({className: "Contact-name"}, this.props.name);
+                 var email = this.props.email ? a({href: this.props.email}, this.props.email) : "";
+                 var description = this.props.description ? div({}, this.props.description) : "";
+                 return li({className: "ContactItem"}, name, email, description);
+             }
+         });
 
-     var contacts = [
-         {key: 1, name: 'Me', email: 'foo@bar'},
-         {key: 2, name: 'You'},
-         {key: 3, name: 'Someone', description: 'Hey wow here is a description.'}
-     ];
-     var contactListItems = contacts
-       .map(function(contact) {
-         return React.createElement(ContactItem, contact)
-       });
+         var contacts = [
+             {key: 1, name: "Me", email: "foo@bar"},
+             {key: 2, name: "You"},
+             {key: 3, name: "Someone", description: "Hey wow here is a description."}
+         ];
+         var contactListItems = contacts
+            .map(function(contact) {
+                return React.createElement(ContactItem, contact)
+            });
 
-     var rootElement = tag.div({},
-       tag.h1({}, 'Contacts'),
-       tag.ul({}, contactListItems)
-     );
-     ReactDOM.render(rootElement, document.getElementById('react-app'));
-    </script>
-  </body>
+         var rootElement = div({},
+                            h1({}, "Contacts"),
+                            ul({}, contactListItems)
+         );
+         ReactDOM.render(rootElement, document.getElementById("react-app"));
+        </script>
+    </body>
 </html>
